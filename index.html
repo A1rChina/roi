@@ -106,7 +106,7 @@
     </div>
 
     <script>
-        const GITHUB_TOKEN = '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';
+        const GITHUB_TOKEN = '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'; // 替换为你的 GitHub Personal Access Token
         const REPO_OWNER = 'a1rchina';
         const REPO_NAME = 'roi';
         const FILE_PATH = 'data.json';
@@ -129,14 +129,19 @@
                 amount: parseFloat(amount)
             };
 
-            var entries = await fetchEntries();
-            entries.push(entry);
-            await saveEntries(entries);
-            appendEntryToTable(entry);
-            updateChart(entries);
+            try {
+                var entries = await fetchEntries();
+                entries.push(entry);
+                await saveEntries(entries);
+                appendEntryToTable(entry);
+                updateChart(entries);
 
-            document.getElementById("description").value = "";
-            document.getElementById("amount").value = "";
+                document.getElementById("description").value = "";
+                document.getElementById("amount").value = "";
+            } catch (error) {
+                console.error('Error adding entry:', error);
+                alert('Error adding entry. Please try again later.');
+            }
         }
 
         async function fetchEntries() {
