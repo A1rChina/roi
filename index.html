@@ -51,6 +51,18 @@
         .step button:hover {
             background: #555;
         }
+        .input-group {
+            margin: 10px 0;
+        }
+        .input-group label {
+            display: block;
+            margin: 5px 0;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
         footer {
             background: #333;
             color: #fff;
@@ -68,9 +80,17 @@
     </header>
     <div class="container">
         <div class="step active" id="step1">
-            <h2>1. 目的</h2>
-            <p>本标准操作程序旨在确保交易活动的规范性、一致性和合规性，降低交易风险，提升交易效率。</p>
-            <button onclick="nextStep(1)">完成并继续</button>
+            <h2>准备工作</h2>
+            <div class="input-group">
+                <label for="leverage">当前杠杆倍数（小于10倍合格）:</label>
+                <input type="number" id="leverage" name="leverage" required>
+            </div>
+            <div class="input-group">
+                <label for="volume">标的24小时交易额（大于5000万美元合格）:</label>
+                <input type="number" id="volume" name="volume" required>
+            </div>
+            <button onclick="validateStep1()">完成并继续</button>
+            <p id="error-message" style="color: red; display: none;">请确保输入的数据符合要求。</p>
         </div>
         <div class="step" id="step2">
             <h2>2. 范围</h2>
@@ -133,6 +153,19 @@
         <p>&copy; 2024 交易者标准操作程序</p>
     </footer>
     <script>
+        function validateStep1() {
+            const leverage = document.getElementById('leverage').value;
+            const volume = document.getElementById('volume').value;
+            const errorMessage = document.getElementById('error-message');
+
+            if (leverage < 10 && volume > 50000000) {
+                errorMessage.style.display = 'none';
+                nextStep(1);
+            } else {
+                errorMessage.style.display = 'block';
+            }
+        }
+
         function nextStep(step) {
             document.getElementById('step' + step).classList.remove('active');
             if (step < 8) {
