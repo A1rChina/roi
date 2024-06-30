@@ -11,45 +11,34 @@
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
         .container {
-            width: 80%;
+            width: 90%;
+            max-width: 600px;
             margin: auto;
             overflow: hidden;
         }
         header {
             background: #333;
             color: #fff;
-            padding-top: 30px;
-            min-height: 70px;
+            padding-top: 20px;
+            padding-bottom: 20px;
             border-bottom: #77aaff 3px solid;
+            text-align: center;
         }
         header h1 {
-            text-align: center;
-            text-transform: uppercase;
             margin: 0;
         }
-        .step {
-            display: none;
+        .card {
             background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-        }
-        .step.active {
-            display: block;
-        }
-        .step button {
-            display: block;
-            margin: 10px auto;
-            padding: 10px 20px;
-            background: #333;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-        }
-        .step button:hover {
-            background: #555;
+            margin: 20px 0;
         }
         .input-group {
             margin: 10px 0;
@@ -62,6 +51,28 @@
             width: 100%;
             padding: 8px;
             box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .button-group {
+            text-align: center;
+        }
+        .button-group button {
+            padding: 10px 20px;
+            background: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .button-group button:hover {
+            background: #555;
+        }
+        #error-message {
+            color: red;
+            text-align: center;
+            display: none;
         }
         footer {
             background: #333;
@@ -69,17 +80,16 @@
             text-align: center;
             padding: 10px;
             margin-top: 20px;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>交易者标准操作程序 (SOP)</h1>
-        </div>
-    </header>
     <div class="container">
-        <div class="step active" id="step1">
+        <header>
+            <h1>交易者标准操作程序 (SOP)</h1>
+        </header>
+        <div class="card" id="step1">
             <h2>准备工作</h2>
             <div class="input-group">
                 <label for="leverage">当前杠杆倍数（小于10倍合格）:</label>
@@ -89,69 +99,15 @@
                 <label for="volume">标的24小时交易额（大于5000万美元合格）:</label>
                 <input type="number" id="volume" name="volume" required>
             </div>
-            <button onclick="validateStep1()">完成并继续</button>
-            <p id="error-message" style="color: red; display: none;">请确保输入的数据符合要求。</p>
+            <div class="button-group">
+                <button onclick="validateStep1()">完成并继续</button>
+            </div>
+            <p id="error-message">请确保输入的数据符合要求。</p>
         </div>
-        <div class="step" id="step2">
-            <h2>2. 范围</h2>
-            <p>适用于所有从事股票、期货、外汇、加密货币等金融产品交易的交易者。</p>
-            <button onclick="nextStep(2)">完成并继续</button>
-        </div>
-        <div class="step" id="step3">
-            <h2>3. 责任</h2>
-            <p>所有交易者必须严格遵守本SOP，并定期接受培训和考核。</p>
-            <button onclick="nextStep(3)">完成并继续</button>
-        </div>
-        <div class="step" id="step4">
-            <h2>4. 操作步骤</h2>
-            <h3>4.1 准备阶段</h3>
-            <ol>
-                <li><strong>市场研究：</strong>分析市场趋势和新闻事件；使用技术分析和基本面分析工具。</li>
-                <li><strong>制定交易计划：</strong>确定交易目标（短期/中长期）；设定风险管理参数（止损、止盈）；选择交易工具和策略。</li>
-                <li><strong>心理准备：</strong>保持冷静和理性，不受情绪影响。</li>
-            </ol>
-            <button onclick="nextStep(4)">完成并继续</button>
-        </div>
-        <div class="step" id="step5">
-            <h3>4.2 交易阶段</h3>
-            <ol>
-                <li><strong>开盘前准备：</strong>检查交易平台的运行状况；确认资金状况和可用保证金；再次复核交易计划。</li>
-                <li><strong>下单操作：</strong>根据计划执行交易；设置止损和止盈点。</li>
-                <li><strong>监控交易：</strong>实时监控市场变化；及时调整交易策略。</li>
-                <li><strong>应急措施：</strong>遇到突发情况时，遵循预先制定的应急预案；如平台故障，立即联系客服并记录问题。</li>
-            </ol>
-            <button onclick="nextStep(5)">完成并继续</button>
-        </div>
-        <div class="step" id="step6">
-            <h3>4.3 收盘阶段</h3>
-            <ol>
-                <li><strong>交易复盘：</strong>记录当天交易情况（交易品种、数量、价格、盈亏）；分析成功与失败的原因。</li>
-                <li><strong>调整计划：</strong>根据复盘结果，调整和优化交易计划。</li>
-                <li><strong>总结报告：</strong>每周/月形成总结报告，提交给上级或团队讨论。</li>
-            </ol>
-            <button onclick="nextStep(6)">完成并继续</button>
-        </div>
-        <div class="step" id="step7">
-            <h2>5. 风险管理</h2>
-            <ol>
-                <li><strong>资金管理：</strong>每笔交易不超过总资金的5%；保持足够的保证金水平。</li>
-                <li><strong>心理控制：</strong>避免过度交易和情绪化操作；坚持遵守交易计划，不盲目跟风。</li>
-                <li><strong>合规管理：</strong>遵守法律法规和交易所规定；保护个人信息和账户安全。</li>
-            </ol>
-            <button onclick="nextStep(7)">完成并继续</button>
-        </div>
-        <div class="step" id="step8">
-            <h2>6. 责任与问责</h2>
-            <ol>
-                <li><strong>责任：</strong>每位交易者对其操作负全责；团队经理负责监督和指导。</li>
-                <li><strong>问责：</strong>违反SOP者，将根据公司规定进行处理；定期审查和更新SOP，以确保其适用性和有效性。</li>
-            </ol>
-            <button onclick="nextStep(8)">完成</button>
-        </div>
+        <footer>
+            <p>&copy; 2024 交易者标准操作程序</p>
+        </footer>
     </div>
-    <footer>
-        <p>&copy; 2024 交易者标准操作程序</p>
-    </footer>
     <script>
         function validateStep1() {
             const leverage = document.getElementById('leverage').value;
@@ -160,18 +116,9 @@
 
             if (leverage < 10 && volume > 50000000) {
                 errorMessage.style.display = 'none';
-                nextStep(1);
+                alert('准备工作已完成！');
             } else {
                 errorMessage.style.display = 'block';
-            }
-        }
-
-        function nextStep(step) {
-            document.getElementById('step' + step).classList.remove('active');
-            if (step < 8) {
-                document.getElementById('step' + (step + 1)).classList.add('active');
-            } else {
-                alert('所有步骤已完成！');
             }
         }
     </script>
