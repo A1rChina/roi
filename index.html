@@ -24,7 +24,12 @@
         .form-group {
             margin-bottom: 15px;
         }
+        #chartContainer {
+            width: 80%;
+            margin: auto;
+        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <h1>Profit and Loss Tracker</h1>
@@ -50,8 +55,21 @@
         </tbody>
     </table>
 
+    <div id="chartContainer">
+        <canvas id="profitLossChart"></canvas>
+    </div>
+
     <script>
-        function addEntry() {
+        const GITHUB_TOKEN = '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';
+        const REPO_OWNER = 'a1rchina';
+        const REPO_NAME = 'roi';
+        const FILE_PATH = 'data.json';
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            loadEntries();
+        });
+
+        async function addEntry() {
             var description = document.getElementById("description").value;
             var amount = document.getElementById("amount").value;
 
@@ -60,17 +78,122 @@
                 return;
             }
 
+            var entry = {
+                description: description,
+                amount: parseFloat(amount)
+            };
+
+            var entries = await fetchEntries();
+            entries.push(entry);
+            await saveEntries(entries);
+            appendEntryToTable(entry);
+            updateChart(entries);
+
+            document.getElementById("description").value = "";
+            document.getElementById("amount").value = "";
+        }
+
+        async function fetchEntries() {
+            const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+                headers: {
+                    'Authorization': `token ${GITHUB_TOKEN}`
+                }
+            });
+            if (response.status === 404) {
+                return [];
+            }
+            const data = await response.json();
+            const content = atob(data.content);
+            return JSON.parse(content);
+        }
+
+        async function saveEntries(entries) {
+            const content = btoa(JSON.stringify(entries));
+            const sha = await getSha();
+            await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${GITHUB_TOKEN}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: 'Update entries',
+                    content: content,
+                    sha: sha
+                })
+            });
+        }
+
+        async function getSha() {
+            const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+                headers: {
+                    'Authorization': `token ${GITHUB_TOKEN}`
+                }
+            });
+            if (response.status === 404) {
+                return null;
+            }
+            const data = await response.json();
+            return data.sha;
+        }
+
+        async function loadEntries() {
+            const entries = await fetchEntries();
+            entries.forEach(entry => {
+                appendEntryToTable(entry);
+            });
+            updateChart(entries);
+        }
+
+        function appendEntryToTable(entry) {
             var table = document.getElementById("entriesTable").getElementsByTagName('tbody')[0];
             var newRow = table.insertRow();
 
             var descriptionCell = newRow.insertCell(0);
             var amountCell = newRow.insertCell(1);
 
-            descriptionCell.innerHTML = description;
-            amountCell.innerHTML = amount;
+            descriptionCell.innerHTML = entry.description;
+            amountCell.innerHTML = entry.amount;
+        }
 
-            document.getElementById("description").value = "";
-            document.getElementById("amount").value = "";
+        function updateChart(entries) {
+            const ctx = document.getElementById('profitLossChart').getContext('2d');
+            const labels = entries.map((entry, index) => `Entry ${index + 1}`);
+            const data = entries.map(entry => entry.amount);
+            const cumulativeData = data.reduce((acc, value, index) => {
+                acc.push((acc[index - 1] || 0) + value);
+                return acc;
+            }, []);
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Cumulative Profit/Loss',
+                        data: cumulativeData,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 2,
+                        fill: false
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Entries'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Amount'
+                            }
+                        }
+                    }
+                }
+            });
         }
     </script>
 </body>
