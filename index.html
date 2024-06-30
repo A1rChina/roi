@@ -6,81 +6,102 @@
     <title>交易者标准操作程序 (SOP)</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            background-color: #222;
+            color: #fff;
+            overflow-x: hidden;
         }
         .container {
             width: 90%;
             max-width: 600px;
             margin: auto;
-            overflow: hidden;
+            padding: 20px;
+            background: linear-gradient(to bottom right, #333, #222);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            text-align: center;
         }
         header {
-            background: #333;
-            color: #fff;
-            padding-top: 20px;
-            padding-bottom: 20px;
-            border-bottom: #77aaff 3px solid;
-            text-align: center;
+            padding: 10px;
         }
         header h1 {
             margin: 0;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
         .card {
-            background: #fff;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 20px;
             margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: scale(1.05);
         }
         .input-group {
             margin: 10px 0;
         }
         .input-group label {
             display: block;
-            margin: 5px 0;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
         }
         .input-group input {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             box-sizing: border-box;
-            border: 1px solid #ddd;
+            border: 1px solid #ccc;
             border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .input-group input:focus {
+            border-color: #77aaff;
+            box-shadow: 0 0 10px rgba(119, 170, 255, 0.5);
         }
         .button-group {
             text-align: center;
         }
         .button-group button {
-            padding: 10px 20px;
-            background: #333;
-            color: #fff;
+            padding: 12px 24px;
+            margin-top: 10px;
+            background: #77aaff;
+            color: #222;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
         }
         .button-group button:hover {
-            background: #555;
-        }
-        #error-message {
-            color: red;
-            text-align: center;
-            display: none;
+            background: #5599ff;
+            transform: translateY(-2px);
         }
         footer {
-            background: #333;
-            color: #fff;
-            text-align: center;
-            padding: 10px;
             margin-top: 20px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
             border-radius: 10px;
+        }
+        footer p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
         }
     </style>
 </head>
@@ -89,7 +110,7 @@
         <header>
             <h1>交易者标准操作程序 (SOP)</h1>
         </header>
-        <div class="card" id="step1">
+        <div class="card">
             <h2>准备工作</h2>
             <div class="input-group">
                 <label for="leverage">当前杠杆倍数（小于10倍合格）:</label>
@@ -102,7 +123,7 @@
             <div class="button-group">
                 <button onclick="validateStep1()">完成并继续</button>
             </div>
-            <p id="error-message">请确保输入的数据符合要求。</p>
+            <p id="error-message" style="display: none; color: red;">请确保输入的数据符合要求。</p>
         </div>
         <footer>
             <p>&copy; 2024 交易者标准操作程序</p>
