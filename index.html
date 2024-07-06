@@ -1,39 +1,75 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apple风格网站</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Progress Bar Animation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #333;
+            color: #fff;
+            margin: 0;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #555;
+            border-radius: 25px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            height: 30px;
+            width: 0;
+            background: linear-gradient(to right, #4caf50, #81c784);
+            border-radius: 25px;
+            transition: width 2s ease-in-out;
+        }
+
+        .progress-text {
+            margin-top: 10px;
+            font-size: 1.5rem;
+        }
+    </style>
 </head>
 <body>
-    <nav>
-        <div class="logo">Logo</div>
-        <ul>
-            <li><a href="#products">产品</a></li>
-            <li><a href="#features">特点</a></li>
-            <li><a href="#contact">联系</a></li>
-        </ul>
-    </nav>
-    <section class="hero">
-        <h1>欢迎来到我们的网站</h1>
-        <p>体验前所未有的设计与创新。</p>
-    </section>
-    <section id="products">
-        <h2>我们的产品</h2>
-        <div class="product-grid">
-            <!-- 产品展示 -->
-        </div>
-    </section>
-    <section id="features">
-        <h2>产品特点</h2>
-        <div class="features-grid">
-            <!-- 特点介绍 -->
-        </div>
-    </section>
-    <footer>
-        <p>&copy; 2024 公司名称. 保留所有权利。</p>
-    </footer>
-    <script src="script.js"></script>
+
+<div class="container">
+    <h1>Funding Progress</h1>
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    <div class="progress-text" id="progress-text">0%</div>
+</div>
+
+<script>
+    const currentAmount = 200;
+    const targetAmount = 100000;
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+
+    function updateProgress() {
+        const percentage = (currentAmount / targetAmount) * 100;
+        progressBar.style.width = `${percentage}%`;
+        progressText.textContent = `${percentage.toFixed(2)}%`;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        updateProgress();
+    });
+</script>
+
 </body>
 </html>
